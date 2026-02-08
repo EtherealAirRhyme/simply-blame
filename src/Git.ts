@@ -10,7 +10,7 @@ export const getCommitMessage = async (document: vscode.TextDocument, commit: st
     const location = getLocation(document.fileName);
     
     try {
-        const body = await command(`cd ${location} && git show ${commit}`);
+        const body = await command(`git show ${commit}`, location);
         const message = body?.substring(body.indexOf('\n\n'), body.search('diff --git'));
         return message?.replace(/^ {2,}/gm, '');
     } catch (e) {
@@ -23,7 +23,7 @@ export const blameFile = async (fileName: string): Promise<string> => {
     const location = fileName.replace(name, '');
 
     try {
-        return await command(`cd "${location}" && git blame --porcelain "${name}"`) ?? '';
+        return await command(`git blame --porcelain "${name}"`, location) ?? '';
     } catch (e) {
         if ((e as Error).message.match(/no such path .* in HEAD/)) {
             vscode.window.showWarningMessage(`File: ${name} is not in HEAD`);
