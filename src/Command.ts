@@ -4,12 +4,12 @@
 import { spawn } from 'child_process';
 import { log } from './Logger';
 
-export const command = async (command: string): Promise<string> => {
+export const command = async (command: string, location: string): Promise<string> => {
     return await new Promise<string>((resolve, reject) => {
         let res = '';
 
         log.trace('Command ', command, 'started');
-        const cmd = spawn(command, { shell: true });
+        const cmd = spawn(command, { cwd: location, shell: true });
 
         cmd.stdout.on('data', (chunk) => {
             res += String(chunk);
