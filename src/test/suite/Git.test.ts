@@ -53,7 +53,7 @@ diff --git
 
         const message = await getCommitMessage(document, blame.hash);
 
-        sinon.assert.calledWithExactly(commandStub, `cd ${getLocation(document.fileName)} && git show a`);
+        sinon.assert.calledWithExactly(commandStub, `git show a`, getLocation(document.fileName));
 
         assert.strictEqual(message, `
 
@@ -100,36 +100,36 @@ Maybe this commit message is long and descriptive enough to prove a point.
     test('test blameFile slash succeeds', async () => {      
         await blameFile('path/to/file/test.ts');
         
-        sinon.assert.calledWithExactly(commandStub, `cd \"path/to/file/\" && git blame --porcelain \"test.ts\"`);
+        sinon.assert.calledWithExactly(commandStub, `git blame --porcelain \"test.ts\"`, `path/to/file/`);
     });
 
     test('test blameFile backslash succeeds', async () => {
         await blameFile('path\\to\\file\\test.ts');
 
-        sinon.assert.calledWithExactly(commandStub, 'cd \"path\\to\\file\\\" && git blame --porcelain \"test.ts\"');
+        sinon.assert.calledWithExactly(commandStub, `git blame --porcelain \"test.ts\"`, 'path\\to\\file\\');
     });
 
     test('test blameFile filename with dash succeeds', async () => {
         await blameFile('path/to/file/test-this.txt');
 
-        sinon.assert.calledWithExactly(commandStub, `cd \"path/to/file/\" && git blame --porcelain \"test-this.txt\"`);
+        sinon.assert.calledWithExactly(commandStub, `git blame --porcelain \"test-this.txt\"`, `path/to/file/`);
     });
 
     test('test blameFile filename with space succeeds', async () => {
         await blameFile('path/to/file/test this.txt');
 
-        sinon.assert.calledWithExactly(commandStub, `cd \"path/to/file/\" && git blame --porcelain \"test this.txt\"`);
+        sinon.assert.calledWithExactly(commandStub, `git blame --porcelain \"test this.txt\"`, `path/to/file/`);
     });
 
     test('test blameFile path with space succeeds', async () => {
         await blameFile('path/to my files/test.txt');
 
-        sinon.assert.calledWithExactly(commandStub, `cd \"path/to my files/\" && git blame --porcelain \"test.txt\"`);
+        sinon.assert.calledWithExactly(commandStub, `git blame --porcelain \"test.txt\"`, `path/to my files/`);
     });
 
     test('test blameFile path and filename with space succeeds', async () => {
         await blameFile('path/to my files/test this.txt');
 
-        sinon.assert.calledWithExactly(commandStub, `cd \"path/to my files/\" && git blame --porcelain \"test this.txt\"`);
+        sinon.assert.calledWithExactly(commandStub, `git blame --porcelain \"test this.txt\"`, `path/to my files/`);
     });
 });
